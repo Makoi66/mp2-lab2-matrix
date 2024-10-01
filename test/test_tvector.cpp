@@ -75,17 +75,27 @@ TEST(TDynamicVector, throws_when_set_element_with_too_large_index)
 
 TEST(TDynamicVector, can_assign_vector_to_itself)
 {
-	TDynamicVector<int> v(1);
+	TDynamicVector<int> v(3);
+	TDynamicVector<int> v1(3);
+	v[2] = 4;
+	v1 = v;
 
 	ASSERT_NO_THROW(v = v);
+	v = v;
+
+	ASSERT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
 	TDynamicVector<int> v(5);
 	TDynamicVector<int> v1(5);
+	v[2] = 4;
 
-	ASSERT_NO_THROW(v1 = v);
+	ASSERT_NO_THROW(v = v1);
+	v1 = v;
+
+	ASSERT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -102,8 +112,12 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
 	TDynamicVector<int> v(5);
 	TDynamicVector<int> v1(2);
+	v[2] = 4;
 
-	ASSERT_NO_THROW(v1 = v);
+	ASSERT_NO_THROW(v = v1);
+	v1 = v;
+
+	ASSERT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -142,6 +156,9 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
 	v1[1] = 6;
 
 	ASSERT_NO_THROW(v + val);
+	v = v + val;
+
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, can_subtract_scalar_from_vector)
@@ -157,6 +174,9 @@ TEST(TDynamicVector, can_subtract_scalar_from_vector)
 	v1[1] = 6;
 
 	ASSERT_NO_THROW(v1 - val);
+	v1 = v1 - val;
+
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, can_multiply_scalar_by_vector)
@@ -172,6 +192,9 @@ TEST(TDynamicVector, can_multiply_scalar_by_vector)
 	v1[1] = 5;
 
 	ASSERT_NO_THROW(v * val);
+	v = v * val;
+
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, can_add_vectors_with_equal_size)
@@ -185,6 +208,9 @@ TEST(TDynamicVector, can_add_vectors_with_equal_size)
 	v1[1] = 2;
 
 	ASSERT_NO_THROW(v + v);
+	v = v + v;
+
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
@@ -206,6 +232,9 @@ TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
 	v1[1] = 2;
 
 	ASSERT_NO_THROW(v1 - v);
+	v1 = v1 - v;
+
+	EXPECT_EQ(v, v1);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
@@ -226,13 +255,17 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 {
 	TDynamicVector<int> v(2);
 	TDynamicVector<int> v1(2);
+	int val = 0;
 
 	v[0] = 1;
 	v[1] = 1;
 	v1[0] = 2;
 	v1[1] = 2;
 
-	ASSERT_NO_THROW(v1 * v);
+	ASSERT_NO_THROW(v * v1);
+	val = v * v1;
+
+	EXPECT_EQ(val, 4);
 }
 
 TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
