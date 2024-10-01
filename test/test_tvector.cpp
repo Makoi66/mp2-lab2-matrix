@@ -282,3 +282,37 @@ TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size)
 	ASSERT_ANY_THROW(v1 * v);
 }
 
+TEST(TDynamicVector, can_move_vector)
+{
+	TDynamicVector<int> v(5);
+	TDynamicVector<int> v1(5);
+	for (int i = 0; i < 5; ++i) {
+		v[i] = i;
+		v1[i] = i;
+	}
+
+	TDynamicVector<int> v2(std::move(v1));
+
+	ASSERT_EQ(v1.size(), 0);
+	ASSERT_EQ(v2.size(), 5);
+
+	ASSERT_EQ(v, v2);
+}
+
+TEST(TDynamicVector, can_move_assign_vector)
+{
+	TDynamicVector<int> v(5);
+	TDynamicVector<int> v1(5);
+	for (int i = 0; i < 5; ++i) {
+		v[i] = i;
+		v1[i] = i;
+	}
+
+	TDynamicVector<int> v2(2);
+	v2 = std::move(v1);
+
+	ASSERT_EQ(v1.size(), 0);
+	ASSERT_EQ(v2.size(), 5);
+
+	ASSERT_EQ(v, v2);
+}

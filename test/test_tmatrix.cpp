@@ -207,3 +207,38 @@ TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m - m1);
 }
 
+TEST(TDynamicMatrix, can_move_matrix)
+{
+	TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m1(5);
+	for (int i = 0; i < 5; ++i)
+		for (int j = 0; j < 5; ++j) {
+			m[i][j] = i * 5 + j;
+			m1[i][j] = i * 5 + j;
+		}
+
+	TDynamicMatrix<int> m2(std::move(m1));
+
+	ASSERT_EQ(m1.get_size(), 0);
+	ASSERT_EQ(m2.get_size(), 5);
+
+	ASSERT_EQ(m, m2);
+}
+
+TEST(TDynamicMatrix, can_move_assign_matrix)
+{
+	TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m1(5);
+	for (int i = 0; i < 5; ++i)
+		for (int j = 0; j < 5; ++j) {
+			m[i][j] = i * 5 + j;
+			m1[i][j] = i * 5 + j;
+		}
+	TDynamicMatrix<int> m2(2);
+	m2 = std::move(m1);
+	
+	ASSERT_EQ(m1.get_size(), 0);
+	ASSERT_EQ(m2.get_size(), 5);
+
+	ASSERT_EQ(m, m2);
+}
